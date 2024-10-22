@@ -98,19 +98,69 @@ Fund data is sourced from [Vasili Africa's August 2023 MMF analysis](https://vas
 - Management fees
 - Performance metrics
 
-## Notes and Assumptions
-- Interest is calculated daily and compounded monthly
-- Returns are shown after withholding tax
-- Management fees are deducted monthly (if enabled)
-- Calculations account for actual calendar days
-- Bank holidays are not considered
-- Past performance does not guarantee future returns
+## Assumptions
+
+### Interest Rate Assumptions
+- Interest rates remain constant throughout the investment period
+- Current advertised rates are used for the entire duration
+- No market fluctuations or rate changes are considered
+- Interest is earned on every calendar day
+
+### Timing and Transaction Assumptions
+- Monthly contributions are made at the start of each month
+- No delays in contribution processing
+- No missed contributions
+- No partial withdrawals are allowed
+- All dividends are automatically reinvested
+
+### Fee Structure Assumptions
+- Management fees are constant percentages
+- Fees are calculated and charged monthly based on average balance
+- No additional transaction fees or charges are considered
+- No fee structure changes during the investment period
+- No account opening, statement, or service charges
+
+### Calendar and Processing Assumptions
+- Interest is earned on all calendar days
+- No distinction between business days and weekends
+- Bank holidays are not considered in calculations
+- No settlement or processing delays
+- No deposit processing delays
+
+### Tax Treatment Assumptions
+- Withholding tax rate remains constant
+- Tax is applied uniformly to all interest earned
+- No tax exemptions or special cases are considered
+- No changes in tax policy during the investment period
+
+### Risk Considerations
+- No credit risk factors included
+- No default risk considerations
+- No market risk adjustments
+- All funds are assumed to be equally secure
+- Past performance patterns continue into the future
+
+### Operational Assumptions
+- No minimum balance requirements enforced
+- No early withdrawal penalties
+- No administrative fees
+- No account opening fees
+- No statement or service charges
+
+### Investment Behavior Assumptions
+- All contributions are made as scheduled
+- No emergency withdrawals
+- Consistent investment behavior throughout the period
+- All earnings are reinvested
+
+
+## Important Note
+These assumptions are made for calculation purposes and may not reflect actual market conditions or specific fund policies. Always consult with financial advisors and read fund documentation for actual terms and conditions.
+
 
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Disclaimer
-This tool is for informational purposes only. Always consult with a qualified financial advisor before making investment decisions.
 
 ## License
 MIT License - see LICENSE file for details.
