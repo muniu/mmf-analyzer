@@ -30,55 +30,80 @@ class Fund:
 class MMFAnalyzer:
     funds: list[Fund] = [
         Fund(
-            name="GenAfrica Money Market Fund",
-            rate=Decimal("11.789"),
-            mgt_fee=Decimal("0.9"),
-        ),
-        Fund(
-            name="Enwealth Money Market Fund",
-            rate=Decimal("11.728"),
-            mgt_fee=Decimal("0.8"),
-        ),
-        Fund(
-            name="Lofty-Corban KSH Money Market Fund",
-            rate=Decimal("11.712"),
-            mgt_fee=Decimal("0.85"),
-        ),
-        Fund(
-            name="Cytonn Money Market Fund",
-            rate=Decimal("11.681"),
-            mgt_fee=Decimal("0.95"),
-        ),
-        Fund(
-            name="Zimele Fixed Income Fund",
-            rate=Decimal("11.652"),
-            mgt_fee=Decimal("0.8"),
-        ),
-        Fund(
-            name="Etica Money Market Fund",
-            rate=Decimal("11.589"),
-            mgt_fee=Decimal("0.9"),
-        ),
-        Fund(
-            name="Madison Money Market Fund",
-            rate=Decimal("11.342"),
-            mgt_fee=Decimal("0.85"),
-        ),
-        Fund(
-            name="Jubilee Money Market Fund",
-            rate=Decimal("11.253"),
-            mgt_fee=Decimal("0.9"),
-        ),
-        Fund(
-            name="Apollo Money Market Fund",
-            rate=Decimal("11.031"),
-            mgt_fee=Decimal("0.85"),
-        ),
-        Fund(
-            name="Kuza Money Market Fund (KES)",
-            rate=Decimal("10.973"),
-            mgt_fee=Decimal("0.9"),
-        ),
+        name="Lofty-Corban KSH Money Market Fund",
+        rate=Decimal("16.91"),
+        mgt_fee=Decimal("0.85"),
+    ),
+    Fund(
+        name="Etica Money Market Fund",
+        rate=Decimal("16.86"),
+        mgt_fee=Decimal("0.90"),
+    ),
+    Fund(
+        name="Cytonn Money Market Fund",
+        rate=Decimal("16.80"),
+        mgt_fee=Decimal("0.95"),
+    ),
+    Fund(
+        name="Kuza Money Market Fund (KES)",
+        rate=Decimal("16.05"),
+        mgt_fee=Decimal("0.90"),
+    ),
+    Fund(
+        name="Apollo Money Market Fund",
+        rate=Decimal("15.57"),
+        mgt_fee=Decimal("0.85"),
+    ),
+    Fund(
+        name="GenAfrica Money Market Fund",
+        rate=Decimal("15.45"),
+        mgt_fee=Decimal("0.90"),
+    ),
+    Fund(
+        name="Nabo Money Market Fund (KES)",
+        rate=Decimal("15.20"),
+        mgt_fee=Decimal("0.90"),
+    ),
+    Fund(
+        name="GenCap Hela Imara Fund",
+        rate=Decimal("14.94"),
+        mgt_fee=Decimal("2.00"),
+    ),
+    Fund(
+        name="Enwealth Money Market Fund",
+        rate=Decimal("14.82"),
+        mgt_fee=Decimal("0.80"),
+    ),
+    Fund(
+        name="Jubilee Money Market Fund",
+        rate=Decimal("14.76"),
+        mgt_fee=Decimal("0.90"),
+    ),
+    Fund(
+        name="KCB Money Market Fund",
+        rate=Decimal("14.55"),
+        mgt_fee=Decimal("0.90"),
+    ),
+    Fund(
+        name="Co-op Money Market Fund",
+        rate=Decimal("14.42"),
+        mgt_fee=Decimal("0.90"),
+    ),
+    Fund(
+        name="Mayfair Money Market Fund",
+        rate=Decimal("14.40"),
+        mgt_fee=Decimal("0.90"),
+    ),
+    Fund(
+        name="Madison Money Market Fund",
+        rate=Decimal("14.33"),
+        mgt_fee=Decimal("0.85"),
+    ),
+    Fund(
+        name="Absa Shilling Fund MMF",
+        rate=Decimal("14.19"),
+        mgt_fee=Decimal("2.00"),
+    ),
     ]
 
     def validate_parameters(self, params: Dict) -> None:
