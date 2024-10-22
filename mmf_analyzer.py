@@ -5,36 +5,81 @@ from typing import Dict, List, Tuple
 import calendar
 from decimal import Decimal, ROUND_HALF_UP
 
+from dataclasses import dataclass
+
+
+@dataclass
+class Fund:
+    name: str
+    rate: Decimal
+    mgt_fee: Decimal
+
+    def __post_init__(self):
+        if not self.name or not isinstance(self.name, str) or not len(self.name):
+            raise TypeError("Fund name must be a non-empty string")
+        if not self.rate or not isinstance(self.rate, Decimal) or self.rate <= 0:
+            raise ValueError(f"Invalid rate for fund {self.name}")
+        if (
+            not self.mgt_fee
+            or not isinstance(self.mgt_fee, Decimal)
+            or self.mgt_fee < 0
+        ):
+            raise ValueError(f"Invalid management fee for fund {self.name}")
+
 
 class MMFAnalyzer:
-    def __init__(self):
-        self.funds = [
-            {"name": "GenAfrica Money Market Fund", "rate": 11.789, "mgt_fee": 0.9},
-            {"name": "Enwealth Money Market Fund", "rate": 11.728, "mgt_fee": 0.8},
-            {
-                "name": "Lofty-Corban KSH Money Market Fund",
-                "rate": 11.712,
-                "mgt_fee": 0.85,
-            },
-            {"name": "Cytonn Money Market Fund", "rate": 11.681, "mgt_fee": 0.95},
-            {"name": "Zimele Fixed Income Fund", "rate": 11.652, "mgt_fee": 0.8},
-            {"name": "Etica Money Market Fund", "rate": 11.589, "mgt_fee": 0.9},
-            {"name": "Madison Money Market Fund", "rate": 11.342, "mgt_fee": 0.85},
-            {"name": "Jubilee Money Market Fund", "rate": 11.253, "mgt_fee": 0.9},
-            {"name": "Apollo Money Market Fund", "rate": 11.031, "mgt_fee": 0.85},
-            {"name": "Kuza Money Market Fund (KES)", "rate": 10.973, "mgt_fee": 0.9},
-        ]
-        self.validate_fund_data()
-
-    def validate_fund_data(self) -> None:
-        """Validate fund data during initialization"""
-        for fund in self.funds:
-            if not isinstance(fund.get("name"), str) or not fund.get("name"):
-                raise ValueError("Fund name must be a non-empty string")
-            if not isinstance(fund.get("rate"), (int, float)) or fund["rate"] <= 0:
-                raise ValueError(f"Invalid rate for fund {fund['name']}")
-            if not isinstance(fund.get("mgt_fee"), (int, float)) or fund["mgt_fee"] < 0:
-                raise ValueError(f"Invalid management fee for fund {fund['name']}")
+    funds: list[Fund] = [
+        Fund(
+            name="GenAfrica Money Market Fund",
+            rate=Decimal("11.789"),
+            mgt_fee=Decimal("0.9"),
+        ),
+        Fund(
+            name="Enwealth Money Market Fund",
+            rate=Decimal("11.728"),
+            mgt_fee=Decimal("0.8"),
+        ),
+        Fund(
+            name="Lofty-Corban KSH Money Market Fund",
+            rate=Decimal("11.712"),
+            mgt_fee=Decimal("0.85"),
+        ),
+        Fund(
+            name="Cytonn Money Market Fund",
+            rate=Decimal("11.681"),
+            mgt_fee=Decimal("0.95"),
+        ),
+        Fund(
+            name="Zimele Fixed Income Fund",
+            rate=Decimal("11.652"),
+            mgt_fee=Decimal("0.8"),
+        ),
+        Fund(
+            name="Etica Money Market Fund",
+            rate=Decimal("11.589"),
+            mgt_fee=Decimal("0.9"),
+        ),
+        Fund(
+            name="Madison Money Market Fund",
+            rate=Decimal("11.342"),
+            mgt_fee=Decimal("0.85"),
+        ),
+        Fund(
+            name="Jubilee Money Market Fund",
+            rate=Decimal("11.253"),
+            mgt_fee=Decimal("0.9"),
+        ),
+        Fund(
+            name="Apollo Money Market Fund",
+            rate=Decimal("11.031"),
+            mgt_fee=Decimal("0.85"),
+        ),
+        Fund(
+            name="Kuza Money Market Fund (KES)",
+            rate=Decimal("10.973"),
+            mgt_fee=Decimal("0.9"),
+        ),
+    ]
 
     def validate_parameters(self, params: Dict) -> None:
         """Validate input parameters"""
@@ -80,7 +125,7 @@ class MMFAnalyzer:
 
     def calculate_monthly_returns(
         self,
-        fund: Dict,
+        fund: Fund,
         params: Dict,
         current_date: datetime.date,
         month: int,
@@ -88,7 +133,7 @@ class MMFAnalyzer:
     ) -> Dict:
         """Calculate returns for a single month"""
         days_in_month = self.get_month_days(current_date)
-        daily_rate = Decimal(str(fund["rate"])) / 365 / 100
+        daily_rate = Decimal(str(fund.rate)) / 365 / 100
         withholding_tax = Decimal(str(params["withholding_tax"]))
 
         # Track opening balance for fee calculation
@@ -122,7 +167,7 @@ class MMFAnalyzer:
         monthly_fee = Decimal("0")
         if params["include_fees"]:
             monthly_fee = self.calculate_management_fee(
-                opening_balance, balance, Decimal(str(fund["mgt_fee"]))
+                opening_balance, balance, fund.mgt_fee
             )
             balance -= monthly_fee
 
@@ -133,7 +178,7 @@ class MMFAnalyzer:
             "daily_balances": daily_balances,
         }
 
-    def calculate_returns(self, fund: Dict, params: Dict) -> Dict:
+    def calculate_returns(self, fund: Fund, params: Dict) -> Dict:
         """Calculate returns with improved accuracy and timing"""
         # Convert numerical values to Decimal for precise calculations
         balance = Decimal(str(params["initial_capital"]))
@@ -185,7 +230,7 @@ class MMFAnalyzer:
             }
 
         except Exception as e:
-            raise ValueError(f"Error calculating returns for {fund['name']}: {str(e)}")
+            raise ValueError(f"Error calculating returns for {fund.name}: {str(e)}")
 
     def get_user_input(self) -> Dict:
         """Get investment parameters from user with improved validation"""
@@ -278,7 +323,7 @@ class MMFAnalyzer:
                     results.append((fund, result))
                 except Exception as e:
                     print(
-                        f"Warning: Could not calculate returns for {fund['name']}: {str(e)}"
+                        f"Warning: Could not calculate returns for {fund.name}: {str(e)}"
                     )
 
             if not results:
@@ -295,8 +340,8 @@ class MMFAnalyzer:
 
             for fund, result in results:
                 print(
-                    f"{fund['name']:<35}",
-                    f"{fund['rate']:>8.3f}%",
+                    f"{fund.name:<35}",
+                    f"{fund.rate:>8.3f}%",
                     f"{self.format_currency(result['final_balance']):>20}",
                     f"{self.format_currency(result['total_interest']):>15}",
                     f"{result['net_return_percent']:>14.2f}%",
@@ -306,10 +351,10 @@ class MMFAnalyzer:
             best_fund, best_result = results[0]
             print("\nBest Performing Fund Details:")
             print("-" * 50)
-            print(f"Fund: {best_fund['name']}")
-            print(f"Annual Interest Rate: {best_fund['rate']}%")
+            print(f"Fund: {best_fund.name}")
+            print(f"Annual Interest Rate: {best_fund.rate}%")
             if params["include_fees"]:
-                print(f"Management Fee Rate: {best_fund['mgt_fee']}%")
+                print(f"Management Fee Rate: {best_fund.mgt_fee}%")
 
             print("\nMonthly Balance Progression (Best Fund):")
             print("-" * 50)
