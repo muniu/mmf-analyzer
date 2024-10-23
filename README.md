@@ -116,7 +116,7 @@ December 2024 (31 days): KES 151,939.28
 - Calculations use actual calendar days per month
 
 ## Data Source
-Fund data is sourced from [Vasili Africa's August 2023 MMF analysis](https://vasiliafrica.com/top-15-money-market-funds-in-kenya-august-2023/), including:
+Fund data is sourced from [Vasili Africa's analysis](https://vasiliafrica.com/top-15-money-market-funds-in-kenya-july-2024/), including:
 - Fund rates
 - Management fees
 - Performance metrics
@@ -192,4 +192,4 @@ MIT License - see LICENSE file for details.
 For questions or suggestions, please open an issue in the GitHub repository.
 
 ---
-Data Source: [Vasili Africa - Top 15 Money Market Funds in Kenya (August 2023)](https://vasiliafrica.com/top-15-money-market-funds-in-kenya-august-2023/)
+Data Source: [Vasili Africa - Top 15 Money Market Funds in Kenya](https://vasiliafrica.com/top-15-money-market-funds-in-kenya-july-2024/)
