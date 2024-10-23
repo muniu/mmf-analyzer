@@ -18,6 +18,7 @@ class Fund:
     including its name, interest rate, management fee, and minimum investment
     requirement. All numerical values are stored as Decimal for precise calculations.
     """
+
     name: str
     rate: Decimal
     mgt_fee: Decimal
@@ -29,9 +30,17 @@ class Fund:
             raise TypeError("Fund name must be a non-empty string")
         if not self.rate or not isinstance(self.rate, Decimal) or self.rate <= 0:
             raise ValueError(f"Invalid rate for fund {self.name}")
-        if not self.mgt_fee or not isinstance(self.mgt_fee, Decimal) or self.mgt_fee < 0:
+        if (
+            not self.mgt_fee
+            or not isinstance(self.mgt_fee, Decimal)
+            or self.mgt_fee < 0
+        ):
             raise ValueError(f"Invalid management fee for fund {self.name}")
-        if not self.minimum_investment or not isinstance(self.minimum_investment, Decimal) or self.minimum_investment < 0:
+        if (
+            not self.minimum_investment
+            or not isinstance(self.minimum_investment, Decimal)
+            or self.minimum_investment < 0
+        ):
             raise ValueError(f"Invalid minimum investment for fund {self.name}")
 
 
@@ -43,7 +52,8 @@ class MMFAnalyzer:
     and withholding tax considerations. Uses actual calendar days for precise
     calculations.
     """
-    def __init__(self, data_file: str = 'funds_data.json'):
+
+    def __init__(self, data_file: str = "funds_data.json"):
         self.funds = self._load_funds(data_file)
 
     def _load_funds(self, data_file: str) -> list[Fund]:
@@ -51,14 +61,14 @@ class MMFAnalyzer:
         try:
             path = Path(data_file)
             if path.exists():
-                with open(path, 'r', encoding='utf-8') as f:
+                with open(path, "r", encoding="utf-8") as f:
                     data = json.load(f)
                     return [
                         Fund(
                             name=fund["name"],
                             rate=Decimal(str(fund["rate"])),
                             mgt_fee=Decimal(str(fund["mgt_fee"])),
-                            minimum_investment=Decimal(str(fund["minimum_investment"]))
+                            minimum_investment=Decimal(str(fund["minimum_investment"])),
                         )
                         for fund in data["funds"]
                     ]
@@ -101,7 +111,9 @@ class MMFAnalyzer:
 
         # Minimum investment validation
         initial_capital = Decimal(str(params["initial_capital"]))
-        available_funds = [fund for fund in self.funds if fund.minimum_investment <= initial_capital]
+        available_funds = [
+            fund for fund in self.funds if fund.minimum_investment <= initial_capital
+        ]
 
         if not available_funds:
             # Find the lowest minimum investment requirement
@@ -113,7 +125,9 @@ class MMFAnalyzer:
             )
 
         # Optional: Add warning for funds that will be excluded
-        excluded_funds = [fund for fund in self.funds if fund.minimum_investment > initial_capital]
+        excluded_funds = [
+            fund for fund in self.funds if fund.minimum_investment > initial_capital
+        ]
         if excluded_funds:
             print("\nNote: The following funds require higher minimum investment:")
             for fund in excluded_funds:
@@ -257,7 +271,9 @@ class MMFAnalyzer:
             }
 
         except Exception as e:
-            raise ValueError(f'Error calculating returns for {fund.name}: {str(e)}') from e
+            raise ValueError(
+                f"Error calculating returns for {fund.name}: {str(e)}"
+            ) from e
 
     def get_user_input(self) -> Dict:
         """Get investment parameters from user with improved validation"""
@@ -432,13 +448,13 @@ class MMFAnalyzer:
 def main():
     """
     Main entry point for the Money Market Fund Analysis Tool.
-    
+
     Handles command line arguments, and manages the interactive analysis session,
     and program termination.
-    
+
     Usage:
         python mmf_analyzer.py
-        
+
     Example:
         python mmf_analyzer.py
     """
