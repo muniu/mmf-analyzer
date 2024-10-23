@@ -11,6 +11,13 @@ import json
 
 @dataclass
 class Fund:
+    """
+    Represents a Money Market Fund with its key attributes and validation.
+
+    A Fund instance stores the essential characteristics of a money market fund
+    including its name, interest rate, management fee, and minimum investment
+    requirement. All numerical values are stored as Decimal for precise calculations.
+    """
     name: str
     rate: Decimal
     mgt_fee: Decimal
@@ -18,7 +25,7 @@ class Fund:
 
     def __post_init__(self):
         """Validate fund data after initialization"""
-        if not self.name or not isinstance(self.name, str) or not len(self.name):
+        if not isinstance(self.name, str) or not self.name:
             raise TypeError("Fund name must be a non-empty string")
         if not self.rate or not isinstance(self.rate, Decimal) or self.rate <= 0:
             raise ValueError(f"Invalid rate for fund {self.name}")
@@ -29,16 +36,22 @@ class Fund:
 
 
 class MMFAnalyzer:
-    
+    """
+    Money Market Fund (MMF) Analysis Tool for Kenyan investment funds.
+    Provides comprehensive analysis of MMF investments, calculating returns
+    with daily interest compounding, monthly contributions, management fees,
+    and withholding tax considerations. Uses actual calendar days for precise
+    calculations.
+    """
     def __init__(self, data_file: str = 'funds_data.json'):
         self.funds = self._load_funds(data_file)
-    
+
     def _load_funds(self, data_file: str) -> list[Fund]:
         """Load fund data from JSON file with fallback to default data"""
         try:
             path = Path(data_file)
             if path.exists():
-                with open(path, 'r') as f:
+                with open(path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     return [
                         Fund(
@@ -89,7 +102,7 @@ class MMFAnalyzer:
         # Minimum investment validation
         initial_capital = Decimal(str(params["initial_capital"]))
         available_funds = [fund for fund in self.funds if fund.minimum_investment <= initial_capital]
-        
+
         if not available_funds:
             # Find the lowest minimum investment requirement
             min_investment = min(fund.minimum_investment for fund in self.funds)
@@ -299,7 +312,7 @@ class MMFAnalyzer:
         try:
             return f"KES {amount:,.2f}"
         except Exception as e:
-            raise ValueError(f"Error formatting currency: {str(e)}")
+            raise ValueError(f"Error formatting currency: {str(e)}") from e
 
     def print_results(self, params: Dict) -> None:
         """Print comprehensive analysis results with error handling"""
@@ -417,6 +430,18 @@ class MMFAnalyzer:
 
 
 def main():
+    """
+    Main entry point for the Money Market Fund Analysis Tool.
+    
+    Handles command line arguments, and manages the interactive analysis session,
+    and program termination.
+    
+    Usage:
+        python mmf_analyzer.py
+        
+    Example:
+        python mmf_analyzer.py
+    """
     try:
         analyzer = MMFAnalyzer()
 

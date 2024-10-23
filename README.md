@@ -20,23 +20,46 @@ A Python-based command-line tool for analyzing and comparing Money Market Funds 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/mmf-analyzer.git
+git clone git@github.com:muniu/mmf-analyzer.git
 cd mmf-analyzer
 ```
 
-2. Run the analyzer:
-```bash
-python mmf_analyzer.py
+2. Prepare fund data file (funds_data.json):
+```json
+{
+    "funds": [
+        {
+            "name": "Fund Name",
+            "rate": "16.91",
+            "mgt_fee": "0.85",
+            "minimum_investment": "1000"
+        }
+    ]
+}
 ```
 
+3. Run the analyzer:
+```bash
+python mmf_analyzer.py funds_data.json
+```
+
+## Data File Requirements
+The tool requires a JSON file containing fund information with the following structure:
+- `name`: Fund name (string)
+- `rate`: Annual interest rate (decimal)
+- `mgt_fee`: Management fee percentage (decimal)
+- `minimum_investment`: Minimum investment amount in KES (decimal)
+
 ## Usage
-The tool will prompt you for the following inputs:
-- Initial Capital (minimum KES 100)
-- Monthly Contribution (minimum KES 0)
-- Investment Period in months
-- Withholding Tax percentage
-- Management Fee inclusion preference
-- Dividend reinvestment preference
+1. Provide a valid fund data JSON file when running the tool
+2. The tool will prompt you for:
+   - Initial Capital (must meet minimum investment requirements)
+   - Monthly Contribution (minimum KES 0)
+   - Investment Period in months
+   - Withholding Tax percentage
+   - Management Fee inclusion preference
+   - Dividend reinvestment preference
+
 
 ## Sample Output
 ```
