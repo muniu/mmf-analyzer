@@ -40,7 +40,7 @@ cd mmf-analyzer
 
 3. Run the analyzer:
 ```bash
-python mmf_analyzer.py funds_data.json
+python mmf_analyzer.py
 ```
 
 ## Data File Requirements
