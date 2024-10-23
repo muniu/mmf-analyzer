@@ -1,0 +1,99 @@
+{
+    "funds": [
+        {
+            "name": "Lofty-Corban KSH Money Market Fund",
+            "rate": "16.91",
+            "mgt_fee": "0.85",
+            "minimum_investment": "1000"
+        },
+        {
+            "name": "Etica Money Market Fund",
+            "rate": "16.86",
+            "mgt_fee": "0.90",
+            "minimum_investment": "100"
+        },
+        {
+            "name": "Cytonn Money Market Fund",
+            "rate": "16.80",
+            "mgt_fee": "0.95",
+            "minimum_investment": "1000"
+        },
+        {
+            "name": "Kuza Money Market Fund (KES)",
+            "rate": "16.05",
+            "mgt_fee": "0.90",
+            "minimum_investment": "5000"
+        },
+        {
+            "name": "Apollo Money Market Fund",
+            "rate": "15.57",
+            "mgt_fee": "0.85",
+            "minimum_investment": "1000"
+        },
+        {
+            "name": "GenAfrica Money Market Fund",
+            "rate": "15.45",
+            "mgt_fee": "0.90",
+            "minimum_investment": "1000"
+        },
+        {
+            "name": "Nabo Money Market Fund (KES)",
+            "rate": "15.20",
+            "mgt_fee": "0.90",
+            "minimum_investment": "100000"
+        },
+        {
+            "name": "GenCap Hela Imara Fund",
+            "rate": "14.94",
+            "mgt_fee": "2.00",
+            "minimum_investment": "500"
+        },
+        {
+            "name": "Enwealth Money Market Fund",
+            "rate": "14.82",
+            "mgt_fee": "0.80",
+            "minimum_investment": "1000"
+        },
+        {
+            "name": "Jubilee Money Market Fund",
+            "rate": "14.76",
+            "mgt_fee": "0.90",
+            "minimum_investment": "1000"
+        },
+        {
+            "name": "KCB Money Market Fund",
+            "rate": "14.55",
+            "mgt_fee": "0.90",
+            "minimum_investment": "5000"
+        },
+        {
+            "name": "Co-op Money Market Fund",
+            "rate": "14.42",
+            "mgt_fee": "0.90",
+            "minimum_investment": "2000"
+        },
+        {
+            "name": "Mayfair Money Market Fund",
+            "rate": "14.40",
+            "mgt_fee": "0.90",
+            "minimum_investment": "1000"
+        },
+        {
+            "name": "Madison Money Market Fund",
+            "rate": "14.33",
+            "mgt_fee": "0.85",
+            "minimum_investment": "5000"
+        },
+        {
+            "name": "Absa Shilling Fund MMF",
+            "rate": "14.19",
+            "mgt_fee": "2.00",
+            "minimum_investment": "1000"
+        }
+    ],
+    "metadata": {
+        "last_updated": "2024-01-01",
+        "source": "Vasili Africa",
+        "url": "https://vasiliafrica.com/top-15-money-market-funds-in-kenya-august-2023/"
+    }
+}

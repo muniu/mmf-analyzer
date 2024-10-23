@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 import datetime
-from typing import Dict, List, Tuple
+from typing import Dict
 import calendar
 from decimal import Decimal, ROUND_HALF_UP
-
 from dataclasses import dataclass
+from pathlib import Path
+import json
 
 
 @dataclass
@@ -13,101 +14,69 @@ class Fund:
     name: str
     rate: Decimal
     mgt_fee: Decimal
+    minimum_investment: Decimal
 
     def __post_init__(self):
+        """Validate fund data after initialization"""
         if not self.name or not isinstance(self.name, str) or not len(self.name):
             raise TypeError("Fund name must be a non-empty string")
         if not self.rate or not isinstance(self.rate, Decimal) or self.rate <= 0:
             raise ValueError(f"Invalid rate for fund {self.name}")
-        if (
-            not self.mgt_fee
-            or not isinstance(self.mgt_fee, Decimal)
-            or self.mgt_fee < 0
-        ):
+        if not self.mgt_fee or not isinstance(self.mgt_fee, Decimal) or self.mgt_fee < 0:
             raise ValueError(f"Invalid management fee for fund {self.name}")
+        if not self.minimum_investment or not isinstance(self.minimum_investment, Decimal) or self.minimum_investment < 0:
+            raise ValueError(f"Invalid minimum investment for fund {self.name}")
 
 
 class MMFAnalyzer:
-    funds: list[Fund] = [
-        Fund(
-        name="Lofty-Corban KSH Money Market Fund",
-        rate=Decimal("16.91"),
-        mgt_fee=Decimal("0.85"),
-    ),
-    Fund(
-        name="Etica Money Market Fund",
-        rate=Decimal("16.86"),
-        mgt_fee=Decimal("0.90"),
-    ),
-    Fund(
-        name="Cytonn Money Market Fund",
-        rate=Decimal("16.80"),
-        mgt_fee=Decimal("0.95"),
-    ),
-    Fund(
-        name="Kuza Money Market Fund (KES)",
-        rate=Decimal("16.05"),
-        mgt_fee=Decimal("0.90"),
-    ),
-    Fund(
-        name="Apollo Money Market Fund",
-        rate=Decimal("15.57"),
-        mgt_fee=Decimal("0.85"),
-    ),
-    Fund(
-        name="GenAfrica Money Market Fund",
-        rate=Decimal("15.45"),
-        mgt_fee=Decimal("0.90"),
-    ),
-    Fund(
-        name="Nabo Money Market Fund (KES)",
-        rate=Decimal("15.20"),
-        mgt_fee=Decimal("0.90"),
-    ),
-    Fund(
-        name="GenCap Hela Imara Fund",
-        rate=Decimal("14.94"),
-        mgt_fee=Decimal("2.00"),
-    ),
-    Fund(
-        name="Enwealth Money Market Fund",
-        rate=Decimal("14.82"),
-        mgt_fee=Decimal("0.80"),
-    ),
-    Fund(
-        name="Jubilee Money Market Fund",
-        rate=Decimal("14.76"),
-        mgt_fee=Decimal("0.90"),
-    ),
-    Fund(
-        name="KCB Money Market Fund",
-        rate=Decimal("14.55"),
-        mgt_fee=Decimal("0.90"),
-    ),
-    Fund(
-        name="Co-op Money Market Fund",
-        rate=Decimal("14.42"),
-        mgt_fee=Decimal("0.90"),
-    ),
-    Fund(
-        name="Mayfair Money Market Fund",
-        rate=Decimal("14.40"),
-        mgt_fee=Decimal("0.90"),
-    ),
-    Fund(
-        name="Madison Money Market Fund",
-        rate=Decimal("14.33"),
-        mgt_fee=Decimal("0.85"),
-    ),
-    Fund(
-        name="Absa Shilling Fund MMF",
-        rate=Decimal("14.19"),
-        mgt_fee=Decimal("2.00"),
-    ),
-    ]
+    
+    def __init__(self, data_file: str = 'funds_data.json'):
+        self.funds = self._load_funds(data_file)
+    
+    def _load_funds(self, data_file: str) -> list[Fund]:
+        """Load fund data from JSON file with fallback to default data"""
+        try:
+            path = Path(data_file)
+            if path.exists():
+                with open(path, 'r') as f:
+                    data = json.load(f)
+                    return [
+                        Fund(
+                            name=fund["name"],
+                            rate=Decimal(str(fund["rate"])),
+                            mgt_fee=Decimal(str(fund["mgt_fee"])),
+                            minimum_investment=Decimal(str(fund["minimum_investment"]))
+                        )
+                        for fund in data["funds"]
+                    ]
+            else:
+                print(f"Data file {data_file} not found, using default data...")
+                return self._get_default_funds()
+        except Exception as e:
+            print(f"Error loading fund data: {str(e)}")
+            print("Using default fund data...")
+            return self._get_default_funds()
+
+    def _get_default_funds(self) -> list[Fund]:
+        """Return default hardcoded funds if file loading fails"""
+        return [
+            Fund(
+                name="My first example fund",
+                rate=Decimal("16.91"),
+                mgt_fee=Decimal("0.85"),
+                minimum_investment=Decimal("1000"),
+            ),
+            Fund(
+                name="My second example fund",
+                rate=Decimal("16.86"),
+                mgt_fee=Decimal("0.90"),
+                minimum_investment=Decimal("100"),
+            ),
+        ]
 
     def validate_parameters(self, params: Dict) -> None:
         """Validate input parameters"""
+        # Basic parameter validation
         if params["initial_capital"] <= 0:
             raise ValueError("Initial capital must be positive")
         if params["monthly_contribution"] < 0:
@@ -116,6 +85,26 @@ class MMFAnalyzer:
             raise ValueError("Investment period must be positive")
         if not 0 <= params["withholding_tax"] <= 100:
             raise ValueError("Withholding tax must be between 0 and 100")
+
+        # Minimum investment validation
+        initial_capital = Decimal(str(params["initial_capital"]))
+        available_funds = [fund for fund in self.funds if fund.minimum_investment <= initial_capital]
+        
+        if not available_funds:
+            # Find the lowest minimum investment requirement
+            min_investment = min(fund.minimum_investment for fund in self.funds)
+            raise ValueError(
+                f"Initial capital of KES {initial_capital:,.2f} is below the minimum investment "
+                f"requirement. Lowest available option is KES {min_investment:,.2f} "
+                f"({next(f.name for f in self.funds if f.minimum_investment == min_investment)})"
+            )
+
+        # Optional: Add warning for funds that will be excluded
+        excluded_funds = [fund for fund in self.funds if fund.minimum_investment > initial_capital]
+        if excluded_funds:
+            print("\nNote: The following funds require higher minimum investment:")
+            for fund in excluded_funds:
+                print(f"- {fund.name}: KES {fund.minimum_investment:,.2f}")
 
     def add_months(self, date: datetime.date, months: int) -> datetime.date:
         """Add months to a date, handling year changes"""
@@ -255,7 +244,7 @@ class MMFAnalyzer:
             }
 
         except Exception as e:
-            raise ValueError(f"Error calculating returns for {fund.name}: {str(e)}")
+            raise ValueError(f'Error calculating returns for {fund.name}: {str(e)}') from e
 
     def get_user_input(self) -> Dict:
         """Get investment parameters from user with improved validation"""
