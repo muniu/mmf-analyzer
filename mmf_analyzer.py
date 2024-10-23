@@ -377,7 +377,13 @@ class MMFAnalyzer:
             # Print Fund Comparison
             print("\nFund Comparison:")
             print("-" * 110)
-            header = f"{'Fund Name':<35} {'Rate':>8} {'Final Balance':>20} {'Interest':>15} {'Net Return':>15}"
+            header = (
+                f"{'Fund Name':<35} "
+                f"{'Rate':>8} "
+                f"{'Final Balance':>20} "
+                f"{'Interest':>15} "
+                f"{'Net Return':>15}"
+            )
             print(header)
             print("-" * 110)
 
@@ -412,7 +418,7 @@ class MMFAnalyzer:
                     current_date = self.add_months(current_date, 1)
 
             # Print Final Results
-            print(f"\nFinal Results:")
+            print("\nFinal Results:")
             print(
                 f"Final Balance: {self.format_currency(best_result['final_balance'])}"
             )
